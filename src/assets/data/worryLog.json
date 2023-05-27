@@ -1,0 +1,794 @@
+{
+  "_children": [
+    {
+      "_children": [
+        Array
+      ],
+      "_internalFiberInstanceHandleDEV": [
+        FiberNode
+      ],
+      "_nativeTag": 20663,
+      "viewConfig": [
+        Object
+      ]
+    }
+  ],
+  "_internalFiberInstanceHandleDEV": {
+    "_debugHookTypes": null,
+    "_debugNeedsRemount": false,
+    "_debugOwner": {
+      "_debugHookTypes": null,
+      "_debugNeedsRemount": false,
+      "_debugOwner": [
+        FiberNode
+      ],
+      "_debugSource": [
+        Object
+      ],
+      "actualDuration": 1.7132159974426031,
+      "actualStartTime": 5891278.313161,
+      "alternate": [
+        FiberNode
+      ],
+      "child": [
+        Circular
+      ],
+      "childLanes": 1,
+      "deletions": null,
+      "dependencies": null,
+      "elementType": [
+        FunctionScrollView
+      ],
+      "flags": 0,
+      "index": 0,
+      "key": null,
+      "lanes": 0,
+      "memoizedProps": [
+        Object
+      ],
+      "memoizedState": [
+        Object
+      ],
+      "mode": 2,
+      "pendingProps": [
+        Object
+      ],
+      "ref": null,
+      "return": [
+        FiberNode
+      ],
+      "selfBaseDuration": 0.22437699977308512,
+      "sibling": null,
+      "stateNode": [
+        ScrollView
+      ],
+      "subtreeFlags": 8388613,
+      "tag": 1,
+      "treeBaseDuration": 154.9299660101533,
+      "type": [
+        FunctionScrollView
+      ],
+      "updateQueue": [
+        Object
+      ]
+    },
+    "_debugSource": {
+      "columnNumber": 7,
+      "fileName": "/Users/prakhar/Documents/Projects/NoWorries/node_modules/react-native/Libraries/Components/ScrollView/ScrollView.js",
+      "lineNumber": 1796
+    },
+    "actualDuration": 1.7071709977462888,
+    "actualStartTime": 5891278.335899,
+    "alternate": {
+      "_debugHookTypes": null,
+      "_debugNeedsRemount": false,
+      "_debugOwner": [
+        FiberNode
+      ],
+      "_debugSource": [
+        Object
+      ],
+      "actualDuration": 1.2118680058047175,
+      "actualStartTime": 5891407.828359,
+      "alternate": [
+        Circular
+      ],
+      "child": [
+        FiberNode
+      ],
+      "childLanes": 0,
+      "deletions": null,
+      "dependencies": null,
+      "elementType": "RCTScrollView",
+      "flags": 0,
+      "index": 0,
+      "key": null,
+      "lanes": 0,
+      "memoizedProps": [
+        Object
+      ],
+      "memoizedState": null,
+      "mode": 2,
+      "pendingProps": [
+        Object
+      ],
+      "ref": [
+        FunctionforwardRef
+      ],
+      "return": [
+        FiberNode
+      ],
+      "selfBaseDuration": 0.026430999860167503,
+      "sibling": null,
+      "stateNode": [
+        Circular
+      ],
+      "subtreeFlags": 8388613,
+      "tag": 5,
+      "treeBaseDuration": 154.3078440092504,
+      "type": "RCTScrollView",
+      "updateQueue": null
+    },
+    "child": {
+      "_debugHookTypes": null,
+      "_debugNeedsRemount": false,
+      "_debugOwner": [
+        FiberNode
+      ],
+      "_debugSource": [
+        Object
+      ],
+      "actualDuration": 1.701547997072339,
+      "actualStartTime": 5891278.36107,
+      "alternate": [
+        FiberNode
+      ],
+      "child": [
+        FiberNode
+      ],
+      "childLanes": 1,
+      "deletions": null,
+      "dependencies": null,
+      "elementType": "RCTScrollContentView",
+      "flags": 0,
+      "index": 0,
+      "key": null,
+      "lanes": 0,
+      "memoizedProps": [
+        Object
+      ],
+      "memoizedState": null,
+      "mode": 2,
+      "pendingProps": [
+        Object
+      ],
+      "ref": [
+        FunctionforwardRef
+      ],
+      "return": [
+        Circular
+      ],
+      "selfBaseDuration": 0.026225999929010868,
+      "sibling": null,
+      "stateNode": [
+        ReactNativeFiberHostComponent
+      ],
+      "subtreeFlags": 8388613,
+      "tag": 5,
+      "treeBaseDuration": 154.67915801052004,
+      "type": "RCTScrollContentView",
+      "updateQueue": null
+    },
+    "childLanes": 1,
+    "deletions": null,
+    "dependencies": null,
+    "elementType": "RCTScrollView",
+    "flags": 0,
+    "index": 0,
+    "key": null,
+    "lanes": 0,
+    "memoizedProps": {
+      "alwaysBounceHorizontal": undefined,
+      "alwaysBounceVertical": true,
+      "children": <RCTScrollContentView…/>,
+      "contentContainerStyle": [
+        Object
+      ],
+      "onContentSizeChange": null,
+      "onLayout": [
+        Functionanonymous
+      ],
+      "onMomentumScrollBegin": [
+        Functionanonymous
+      ],
+      "onMomentumScrollEnd": [
+        Functionanonymous
+      ],
+      "onResponderGrant": [
+        Functionanonymous
+      ],
+      "onResponderReject": [
+        Functionanonymous
+      ],
+      "onResponderRelease": [
+        Functionanonymous
+      ],
+      "onResponderTerminationRequest": [
+        Functionanonymous
+      ],
+      "onScroll": [
+        Functionanonymous
+      ],
+      "onScrollBeginDrag": [
+        Functionanonymous
+      ],
+      "onScrollEndDrag": [
+        Functionanonymous
+      ],
+      "onScrollShouldSetResponder": [
+        Functionanonymous
+      ],
+      "onStartShouldSetResponder": [
+        Functionanonymous
+      ],
+      "onStartShouldSetResponderCapture": [
+        Functionanonymous
+      ],
+      "onTouchCancel": [
+        Functionanonymous
+      ],
+      "onTouchEnd": [
+        Functionanonymous
+      ],
+      "onTouchMove": [
+        Functionanonymous
+      ],
+      "onTouchStart": [
+        Functionanonymous
+      ],
+      "pagingEnabled": false,
+      "scrollEventThrottle": undefined,
+      "scrollViewRef": [
+        Object
+      ],
+      "sendMomentumEvents": false,
+      "snapToEnd": true,
+      "snapToStart": true,
+      "style": [
+        Object
+      ]
+    },
+    "memoizedState": null,
+    "mode": 2,
+    "pendingProps": {
+      "alwaysBounceHorizontal": undefined,
+      "alwaysBounceVertical": true,
+      "children": <RCTScrollContentView…/>,
+      "contentContainerStyle": [
+        Object
+      ],
+      "onContentSizeChange": null,
+      "onLayout": [
+        Functionanonymous
+      ],
+      "onMomentumScrollBegin": [
+        Functionanonymous
+      ],
+      "onMomentumScrollEnd": [
+        Functionanonymous
+      ],
+      "onResponderGrant": [
+        Functionanonymous
+      ],
+      "onResponderReject": [
+        Functionanonymous
+      ],
+      "onResponderRelease": [
+        Functionanonymous
+      ],
+      "onResponderTerminationRequest": [
+        Functionanonymous
+      ],
+      "onScroll": [
+        Functionanonymous
+      ],
+      "onScrollBeginDrag": [
+        Functionanonymous
+      ],
+      "onScrollEndDrag": [
+        Functionanonymous
+      ],
+      "onScrollShouldSetResponder": [
+        Functionanonymous
+      ],
+      "onStartShouldSetResponder": [
+        Functionanonymous
+      ],
+      "onStartShouldSetResponderCapture": [
+        Functionanonymous
+      ],
+      "onTouchCancel": [
+        Functionanonymous
+      ],
+      "onTouchEnd": [
+        Functionanonymous
+      ],
+      "onTouchMove": [
+        Functionanonymous
+      ],
+      "onTouchStart": [
+        Functionanonymous
+      ],
+      "pagingEnabled": false,
+      "scrollEventThrottle": undefined,
+      "scrollViewRef": [
+        Object
+      ],
+      "sendMomentumEvents": false,
+      "snapToEnd": true,
+      "snapToStart": true,
+      "style": [
+        Object
+      ]
+    },
+    "ref": [
+      FunctionforwardRef
+    ],
+    "return": {
+      "_debugHookTypes": null,
+      "_debugNeedsRemount": false,
+      "_debugOwner": [
+        FiberNode
+      ],
+      "_debugSource": [
+        Object
+      ],
+      "actualDuration": 1.7132159974426031,
+      "actualStartTime": 5891278.313161,
+      "alternate": [
+        FiberNode
+      ],
+      "child": [
+        Circular
+      ],
+      "childLanes": 1,
+      "deletions": null,
+      "dependencies": null,
+      "elementType": [
+        FunctionScrollView
+      ],
+      "flags": 0,
+      "index": 0,
+      "key": null,
+      "lanes": 0,
+      "memoizedProps": [
+        Object
+      ],
+      "memoizedState": [
+        Object
+      ],
+      "mode": 2,
+      "pendingProps": [
+        Object
+      ],
+      "ref": null,
+      "return": [
+        FiberNode
+      ],
+      "selfBaseDuration": 0.22437699977308512,
+      "sibling": null,
+      "stateNode": [
+        ScrollView
+      ],
+      "subtreeFlags": 8388613,
+      "tag": 1,
+      "treeBaseDuration": 154.9299660101533,
+      "type": [
+        FunctionScrollView
+      ],
+      "updateQueue": [
+        Object
+      ]
+    },
+    "selfBaseDuration": 0.026430999860167503,
+    "sibling": null,
+    "stateNode": [
+      Circular
+    ],
+    "subtreeFlags": 8388613,
+    "tag": 5,
+    "treeBaseDuration": 154.7055890103802,
+    "type": "RCTScrollView",
+    "updateQueue": null
+  },
+  "_nativeTag": 20665,
+  "flashScrollIndicators": [
+    Functionanonymous
+  ],
+  "getInnerViewNode": [
+    Functionanonymous
+  ],
+  "getInnerViewRef": [
+    Functionanonymous
+  ],
+  "getNativeScrollRef": [
+    Functionanonymous
+  ],
+  "getScrollResponder": [
+    Functionanonymous
+  ],
+  "getScrollableNode": [
+    Functionanonymous
+  ],
+  "scrollResponderScrollNativeHandleToKeyboard": [
+    Functionanonymous
+  ],
+  "scrollResponderZoomTo": [
+    Functionanonymous
+  ],
+  "scrollTo": [
+    Functionanonymous
+  ],
+  "scrollToEnd": [
+    Functionanonymous
+  ],
+  "viewConfig": {
+    "Commands": {
+      "flashScrollIndicators": 4,
+      "getConstants": 5,
+      "getContentSize": 0,
+      "scrollTo": 1,
+      "scrollToEnd": 2,
+      "zoomToRect": 3
+    },
+    "Constants": {
+      
+    },
+    "Manager": "ScrollViewManager",
+    "NativeProps": {
+      "alwaysBounceHorizontal": "BOOL",
+      "alwaysBounceVertical": "BOOL",
+      "automaticallyAdjustContentInsets": "BOOL",
+      "automaticallyAdjustKeyboardInsets": "BOOL",
+      "automaticallyAdjustsScrollIndicatorInsets": "BOOL",
+      "bounces": "BOOL",
+      "bouncesZoom": "BOOL",
+      "canCancelContentTouches": "BOOL",
+      "centerContent": "BOOL",
+      "contentInset": "UIEdgeInsets",
+      "contentInsetAdjustmentBehavior": "UIScrollViewContentInsetAdjustmentBehavior",
+      "contentOffset": "CGPoint",
+      "decelerationRate": "CGFloat",
+      "directionalLockEnabled": "BOOL",
+      "disableIntervalMomentum": "BOOL",
+      "indicatorStyle": "UIScrollViewIndicatorStyle",
+      "inverted": "BOOL",
+      "keyboardDismissMode": "UIScrollViewKeyboardDismissMode",
+      "maintainVisibleContentPosition": "NSDictionary",
+      "maximumZoomScale": "CGFloat",
+      "minimumZoomScale": "CGFloat",
+      "onMomentumScrollBegin": "BOOL",
+      "onMomentumScrollEnd": "BOOL",
+      "onScroll": "BOOL",
+      "onScrollBeginDrag": "BOOL",
+      "onScrollEndDrag": "BOOL",
+      "onScrollToTop": "BOOL",
+      "overflow": "YGOverflow",
+      "pagingEnabled": "BOOL",
+      "pinchGestureEnabled": "BOOL",
+      "scrollEnabled": "BOOL",
+      "scrollEventThrottle": "NSTimeInterval",
+      "scrollIndicatorInsets": "UIEdgeInsets",
+      "scrollToOverflowEnabled": "BOOL",
+      "scrollsToTop": "BOOL",
+      "showsHorizontalScrollIndicator": "BOOL",
+      "showsVerticalScrollIndicator": "BOOL",
+      "snapToAlignment": "NSString",
+      "snapToEnd": "BOOL",
+      "snapToInterval": "int",
+      "snapToOffsets": "NSArray<NSNumber *>",
+      "snapToStart": "BOOL",
+      "zoomScale": "CGFloat"
+    },
+    "baseModuleName": "RCTView",
+    "bubblingEventTypes": {
+      "topBlur": [
+        Object
+      ],
+      "topChange": [
+        Object
+      ],
+      "topEndEditing": [
+        Object
+      ],
+      "topFocus": [
+        Object
+      ],
+      "topKeyPress": [
+        Object
+      ],
+      "topPointerCancel": [
+        Object
+      ],
+      "topPointerDown": [
+        Object
+      ],
+      "topPointerEnter": [
+        Object
+      ],
+      "topPointerLeave": [
+        Object
+      ],
+      "topPointerMove": [
+        Object
+      ],
+      "topPointerOut": [
+        Object
+      ],
+      "topPointerOver": [
+        Object
+      ],
+      "topPointerUp": [
+        Object
+      ],
+      "topPress": [
+        Object
+      ],
+      "topSubmitEditing": [
+        Object
+      ],
+      "topTouchCancel": [
+        Object
+      ],
+      "topTouchEnd": [
+        Object
+      ],
+      "topTouchMove": [
+        Object
+      ],
+      "topTouchStart": [
+        Object
+      ]
+    },
+    "directEventTypes": {
+      "topAccessibilityAction": [
+        Object
+      ],
+      "topAccessibilityEscape": [
+        Object
+      ],
+      "topAccessibilityTap": [
+        Object
+      ],
+      "topLayout": [
+        Object
+      ],
+      "topMagicTap": [
+        Object
+      ],
+      "topMomentumScrollBegin": [
+        Object
+      ],
+      "topMomentumScrollEnd": [
+        Object
+      ],
+      "topScroll": [
+        Object
+      ],
+      "topScrollBeginDrag": [
+        Object
+      ],
+      "topScrollEndDrag": [
+        Object
+      ],
+      "topScrollToTop": [
+        Object
+      ]
+    },
+    "uiViewClassName": "RCTScrollView",
+    "validAttributes": {
+      "accessibilityActions": true,
+      "accessibilityElementsHidden": true,
+      "accessibilityHint": true,
+      "accessibilityIgnoresInvertColors": true,
+      "accessibilityLabel": true,
+      "accessibilityLanguage": true,
+      "accessibilityRole": true,
+      "accessibilityState": true,
+      "accessibilityValue": true,
+      "accessibilityViewIsModal": true,
+      "accessible": true,
+      "alignContent": true,
+      "alignItems": true,
+      "alignSelf": true,
+      "alwaysBounceHorizontal": true,
+      "alwaysBounceVertical": true,
+      "aspectRatio": true,
+      "automaticallyAdjustContentInsets": true,
+      "automaticallyAdjustKeyboardInsets": true,
+      "automaticallyAdjustsScrollIndicatorInsets": true,
+      "backfaceVisibility": true,
+      "backgroundColor": [
+        Object
+      ],
+      "borderBottomColor": [
+        Object
+      ],
+      "borderBottomEndRadius": true,
+      "borderBottomLeftRadius": true,
+      "borderBottomRightRadius": true,
+      "borderBottomStartRadius": true,
+      "borderBottomWidth": true,
+      "borderColor": [
+        Object
+      ],
+      "borderEndColor": [
+        Object
+      ],
+      "borderEndWidth": true,
+      "borderLeftColor": [
+        Object
+      ],
+      "borderLeftWidth": true,
+      "borderRadius": true,
+      "borderRightColor": [
+        Object
+      ],
+      "borderRightWidth": true,
+      "borderStartColor": [
+        Object
+      ],
+      "borderStartWidth": true,
+      "borderStyle": true,
+      "borderTopColor": [
+        Object
+      ],
+      "borderTopEndRadius": true,
+      "borderTopLeftRadius": true,
+      "borderTopRightRadius": true,
+      "borderTopStartRadius": true,
+      "borderTopWidth": true,
+      "borderWidth": true,
+      "bottom": true,
+      "bounces": true,
+      "bouncesZoom": true,
+      "canCancelContentTouches": true,
+      "centerContent": true,
+      "collapsable": true,
+      "contentInset": [
+        Object
+      ],
+      "contentInsetAdjustmentBehavior": true,
+      "contentOffset": [
+        Object
+      ],
+      "decelerationRate": true,
+      "direction": true,
+      "directionalLockEnabled": true,
+      "disableIntervalMomentum": true,
+      "display": true,
+      "end": true,
+      "flex": true,
+      "flexBasis": true,
+      "flexDirection": true,
+      "flexGrow": true,
+      "flexShrink": true,
+      "flexWrap": true,
+      "height": true,
+      "hitSlop": [
+        Object
+      ],
+      "indicatorStyle": true,
+      "inverted": true,
+      "justifyContent": true,
+      "keyboardDismissMode": true,
+      "left": true,
+      "maintainVisibleContentPosition": true,
+      "margin": true,
+      "marginBottom": true,
+      "marginEnd": true,
+      "marginHorizontal": true,
+      "marginLeft": true,
+      "marginRight": true,
+      "marginStart": true,
+      "marginTop": true,
+      "marginVertical": true,
+      "maxHeight": true,
+      "maxWidth": true,
+      "maximumZoomScale": true,
+      "minHeight": true,
+      "minWidth": true,
+      "minimumZoomScale": true,
+      "nativeID": true,
+      "needsOffscreenAlphaCompositing": true,
+      "onAccessibilityAction": true,
+      "onAccessibilityEscape": true,
+      "onAccessibilityTap": true,
+      "onLayout": true,
+      "onMagicTap": true,
+      "onMomentumScrollBegin": true,
+      "onMomentumScrollEnd": true,
+      "onMoveShouldSetResponder": true,
+      "onMoveShouldSetResponderCapture": true,
+      "onPointerCancel": true,
+      "onPointerDown": true,
+      "onPointerEnter": true,
+      "onPointerLeave": true,
+      "onPointerMove": true,
+      "onPointerOut": true,
+      "onPointerOver": true,
+      "onPointerUp": true,
+      "onResponderEnd": true,
+      "onResponderGrant": true,
+      "onResponderMove": true,
+      "onResponderReject": true,
+      "onResponderRelease": true,
+      "onResponderStart": true,
+      "onResponderTerminate": true,
+      "onResponderTerminationRequest": true,
+      "onScroll": true,
+      "onScrollBeginDrag": true,
+      "onScrollEndDrag": true,
+      "onScrollToTop": true,
+      "onShouldBlockNativeResponder": true,
+      "onStartShouldSetResponder": true,
+      "onStartShouldSetResponderCapture": true,
+      "onTouchCancel": true,
+      "onTouchEnd": true,
+      "onTouchMove": true,
+      "onTouchStart": true,
+      "opacity": true,
+      "overflow": true,
+      "padding": true,
+      "paddingBottom": true,
+      "paddingEnd": true,
+      "paddingHorizontal": true,
+      "paddingLeft": true,
+      "paddingRight": true,
+      "paddingStart": true,
+      "paddingTop": true,
+      "paddingVertical": true,
+      "pagingEnabled": true,
+      "pinchGestureEnabled": true,
+      "pointerEvents": true,
+      "position": true,
+      "removeClippedSubviews": true,
+      "right": true,
+      "scrollEnabled": true,
+      "scrollEventThrottle": true,
+      "scrollIndicatorInsets": [
+        Object
+      ],
+      "scrollToOverflowEnabled": true,
+      "scrollsToTop": true,
+      "shadowColor": [
+        Object
+      ],
+      "shadowOffset": [
+        Object
+      ],
+      "shadowOpacity": true,
+      "shadowRadius": true,
+      "shouldRasterizeIOS": true,
+      "showsHorizontalScrollIndicator": true,
+      "showsVerticalScrollIndicator": true,
+      "snapToAlignment": true,
+      "snapToEnd": true,
+      "snapToInterval": true,
+      "snapToOffsets": true,
+      "snapToStart": true,
+      "start": true,
+      "style": [
+        Object
+      ],
+      "testID": true,
+      "top": true,
+      "transform": [
+        Object
+      ],
+      "width": true,
+      "zIndex": true,
+      "zoomScale": true
+    }
+  }
+}

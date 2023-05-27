@@ -1,0 +1,68 @@
+import images from '@assets/images';
+
+export default [
+  {
+    id: 0,
+    title: 'Super benefit-01',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 1,
+    title: 'Super benefit-02',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 2,
+    title: 'Super benefit-03',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 3,
+    title: 'Super benefit-04',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 4,
+    title: 'Super benefit-05',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 5,
+    title: 'Super benefit-06',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 6,
+    title: 'Super benefit-07',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+  {
+    id: 7,
+    title: 'Super benefit-08',
+    description: 'Description will appear here',
+    price: '23,97,400',
+    percent: '3.48%',
+    source: images.background,
+  },
+];
