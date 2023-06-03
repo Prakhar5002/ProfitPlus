@@ -2,7 +2,7 @@ import {Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import images from '@assets/images';
 
-const OptionsHeader = ({title, style, onPress}) => {
+const OptionsHeader = ({title, style, onPress, isMore = true}) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -11,11 +11,13 @@ const OptionsHeader = ({title, style, onPress}) => {
       <Text style={{fontSize: 18, fontWeight: '600', color: '#000', flex: 1}}>
         {title}
       </Text>
-      <Image
-        style={{width: 22, height: 25, tintColor: '#000'}}
-        resizeMode="contain"
-        source={images.right_arrow}
-      />
+      {isMore && (
+        <Image
+          style={{width: 22, height: 25, tintColor: '#000'}}
+          resizeMode="contain"
+          source={images.right_arrow}
+        />
+      )}
     </TouchableOpacity>
   );
 };

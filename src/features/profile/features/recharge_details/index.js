@@ -4,15 +4,18 @@ import globalStyles from '@styles/globalStyles';
 import BackButton from '@components/BackButton';
 import moment from 'moment';
 import {rechargeHistory} from '@queries';
+import {useSelector} from 'react-redux';
+import {capitalize} from '@utils';
 import Loader from '@components/Loader';
 
 const RechargeDetails = ({route, navigation}) => {
   const [details, setDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const userLocalDetails = useSelector(state => state.userDetails.data);
 
   useEffect(() => {
     const formData = new FormData();
-    formData.append('mobile', 8383818145);
+    formData.append('mobile', userLocalDetails?.mobile);
     formData.append('country_code', '+91');
     rechargeHistory(formData)
       .then(res => {
@@ -43,10 +46,21 @@ const RechargeDetails = ({route, navigation}) => {
           ₹{item.amount}
         </Text>
         <Text style={{fontSize: 14, color: 'grey', marginTop: 5}}>
-          76587689789bn6
+          {item.transaction_id}
         </Text>
       </View>
-      <Text style={{color: '#090909'}}>{moment().format('MMM Do YY')}</Text>
+      <View style={{alignItems: 'center'}}>
+        <Text style={{color: '#090909'}}>
+          {moment(item.transaction_date).format('MMM Do YY')}
+        </Text>
+        <Text
+          style={{
+            color: item?.status === 'success' ? 'green' : 'red',
+            marginTop: 5,
+          }}>
+          {capitalize(item?.status)}
+        </Text>
+      </View>
     </View>
   );
 

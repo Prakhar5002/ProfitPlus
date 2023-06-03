@@ -6,15 +6,15 @@ import images from '@assets/images';
 import Link from '@components/Link';
 import FilledButton from '@components/FilledButton';
 import {BOTTOM_TAB, SIGNIN} from '@navigation/screenNames';
-import {mobileVerify, registerUser} from '@queries';
+import {registerUser} from '@queries';
 import {setStorageObject, setStorageString} from '@utils/handleLocalStorage';
 import {JSHash, CONSTANTS} from 'react-native-hash';
 import {STORAGE_KEYS} from '@constants';
 import CustomSnackbar from '@components/CustomSnackbar';
-import {useDispatch} from 'react-redux';
 import {userDetails as userLocalDetails} from '@redux/actions';
 import {passwordValidation} from '@utils/validations';
 import APP_TEXT from '@assets/locale/en';
+import {useDispatch} from 'react-redux';
 import {AppContext} from '@context';
 
 const Signup = ({navigation}) => {
@@ -52,6 +52,9 @@ const Signup = ({navigation}) => {
       confirm_passwd === ''
     ) {
       setResponse('Please fill the details');
+      return false;
+    } else if (!name.match(/^[A-Za-z\s]*$/)) {
+      setResponse('Username must contain alphabets only (eg:- Test)');
       return false;
     } else if (passwd !== confirm_passwd) {
       setResponse("Passwords doesn't match");
@@ -101,6 +104,7 @@ const Signup = ({navigation}) => {
                   };
                   setStorageObject(STORAGE_KEYS.USER_DETAILS, localDetails);
                   setStorageString(STORAGE_KEYS.ACCESS_TOKEN, 'signup_token');
+                  dispatch(userLocalDetails(localDetails));
                   navigation.navigate(BOTTOM_TAB);
                 } else {
                   setResponse(String(Object.values(res?.message)));
@@ -137,6 +141,12 @@ const Signup = ({navigation}) => {
             })
           }
         />
+        {!userDetails.name.match(/^[A-Za-z\s]*$/) &&
+          userDetails.name !== '' && (
+            <Text style={{color: 'red', textAlign: 'center', marginTop: 3}}>
+              Username must contain alphabets only
+            </Text>
+          )}
 
         <InputText
           style={styles.input}

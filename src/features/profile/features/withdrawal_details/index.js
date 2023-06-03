@@ -4,15 +4,17 @@ import globalStyles from '@styles/globalStyles';
 import BackButton from '@components/BackButton';
 import moment from 'moment';
 import {withdrawalHistory} from '@queries';
+import { useSelector } from 'react-redux';
 import Loader from '@components/Loader';
 
 const WithdrawalDetails = ({route, navigation}) => {
   const [details, setDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const userLocalDetails = useSelector(state => state.userDetails.data);
 
   useEffect(() => {
     const formData = new FormData();
-    formData.append('mobile', 8383818145);
+    formData.append('mobile', userLocalDetails?.mobile);
     formData.append('country_code', '+91');
     withdrawalHistory(formData)
       .then(res => {
@@ -43,10 +45,12 @@ const WithdrawalDetails = ({route, navigation}) => {
           ₹{item.amount}
         </Text>
         <Text style={{fontSize: 14, color: 'grey', marginTop: 5}}>
-          76587689789bn6
+          {item?.status}
         </Text>
       </View>
-      <Text style={{color: '#090909'}}>{moment().format('MMM Do YY')}</Text>
+      <Text style={{color: '#090909'}}>
+        {moment(item?.withrawal_date).format('MMM Do YY')}
+      </Text>
     </View>
   );
 
@@ -119,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WithdrawalDetails
+export default WithdrawalDetails;

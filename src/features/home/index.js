@@ -7,7 +7,7 @@ import {
   FlatList,
   RefreshControl,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import images from '@assets/images';
 import globalStyles from '@styles/globalStyles';
@@ -28,9 +28,9 @@ import {
   PACKAGE_DETAILS,
   BOTTOM_TAB,
 } from '@navigation/screenNames';
-import {getPackageList} from '@queries';
+import {getPackageList, checkOrderStatus, paymentResponse} from '@queries';
 import Loader from '@components/Loader';
-import {getUserDetails} from '@queries';
+import {getUserDetails, getNews} from '@queries';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {userDetails} from '@redux/actions';
@@ -39,6 +39,7 @@ import APP_TEXT from '@assets/locale/en';
 import {STORAGE_KEYS} from '@constants';
 import InitialPopup from './components/InitialPopup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {JSHash, CONSTANTS} from 'react-native-hash';
 
 const Home = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,12 +52,30 @@ const Home = ({navigation}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (userLocalDetails.mobile) {
+      if (userLocalDetails?.mobile) {
         fetchUserDetails();
       }
-      setNewsData(news);
     }, []),
   );
+
+  useEffect(() => {
+    getNews()
+      .then(res => {
+        if (res && res?.status) {
+          setNewsData(res?.data);
+        }
+      })
+      .catch(err => console.warn(err))
+      .finally(() => {
+        AsyncStorage.getItem(STORAGE_KEYS.PENDING_TRANSACTION)
+          .then(localRes => {
+            if (localRes !== null) {
+              checkStatus();
+            }
+          })
+          .catch(err => console.warn(err));
+      });
+  }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -70,6 +89,56 @@ const Home = ({navigation}) => {
         setTimeout(() => {
           setIsInitialPopup(true);
         }, 1000);
+      }
+    });
+  };
+
+  const fetchPaymentResponse = (txnId, data, localRes) => {
+    const formData = new FormData();
+    formData.append('mobile', userLocalDetails.mobile);
+    formData.append('country_code', '+91');
+    formData.append('client_txn_id', txnId);
+    formData.append('status_data', JSON.stringify(data));
+    const hashKey = '+91' + txnId + userLocalDetails?.mobile;
+    JSHash(hashKey, CONSTANTS.HashAlgorithms.sha256)
+      .then(hash => {
+        formData.append('authchecksum', hash);
+      })
+      .catch(err => console.warn(err))
+      .finally(() => {
+        paymentResponse(formData)
+          .then(res => {
+            // Alert.alert('some response getting')
+          })
+          .catch(err => {
+            console.warn(err);
+          });
+      });
+  };
+
+  const checkStatus = () => {
+    AsyncStorage.getItem(STORAGE_KEYS.PENDING_TRANSACTION).then(localRes => {
+      if (localRes !== null && localRes?.length > 0) {
+        localRes = JSON.parse(localRes);
+        for (let i = 0; i < localRes.length; i++) {
+          const jsonData = {
+            key: '9e384614-47d4-49b8-9664-8e93c55940e9',
+            client_txn_id: localRes[i]?.txnId,
+            txn_date: localRes[i]?.currentDate,
+          };
+          checkOrderStatus(jsonData)
+            .then(res => {
+              if (res && res?.status) {
+                fetchPaymentResponse(localRes[i]?.txnId, res, localRes);
+              }
+            })
+            .catch(err => {
+              console.warn(err);
+            })
+            .finally(() => {
+              AsyncStorage.removeItem(STORAGE_KEYS.TRANSACTION_DETAILS);
+            });
+        }
       }
     });
   };
@@ -107,7 +176,7 @@ const Home = ({navigation}) => {
             }),
           );
         } else {
-          CustomSnackbar(String(Object.values(res?.message)));
+          fetchUserDetails();
         }
       })
       .catch(err => {
@@ -178,7 +247,7 @@ const Home = ({navigation}) => {
         renderItem={renderPlans}
       />
 
-      <Banner style={{marginTop: 30}} />
+      {/* <Banner style={{marginTop: 30}} /> */}
     </View>
   );
 
@@ -187,22 +256,23 @@ const Home = ({navigation}) => {
     if (index % 2 === 0) {
       isImageAlignLeft = false;
     }
-    if (index === 0) {
-      return (
-        <OptionsHeader
-          style={{marginTop: 10, marginHorizontal: 20}}
-          title="Latest News"
-        />
-      );
-    }
     return (
       <View>
-        <News
-          text={item.text}
-          source={item.source}
-          date={item.date}
-          left={isImageAlignLeft}
-        />
+        {index === 0 && (
+          <OptionsHeader
+            style={{marginTop: 15, marginHorizontal: 20}}
+            title="Latest News"
+            isMore={false}
+          />
+        )}
+        <View style={{marginVertical: 3}}>
+          <News
+            text={item?.content}
+            source={item?.image}
+            date={item?.date}
+            left={isImageAlignLeft}
+          />
+        </View>
       </View>
     );
   };

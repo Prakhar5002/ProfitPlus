@@ -1,5 +1,5 @@
 import {View, Text, StyleSheet, FlatList, Linking} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TabContainer from '@components/TabContainer';
 import {setMediumFont} from '@utils/setStyle';
 import profileOptions from '@assets/data/profileOptions';
@@ -18,29 +18,46 @@ import {
 } from '@navigation/screenNames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
-import {CONTACT_NUMBER} from '@constants';
-import {useSelector} from 'react-redux';
+import {CONTACT_NUMBER, STORAGE_KEYS} from '@constants';
+import {useSelector, useDispatch} from 'react-redux';
+import {userDetails} from '@redux/actions';
 import Loader from '@components/Loader';
+import DeviceInfo from 'react-native-device-info';
 
 const Profile = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
-  const userDetails = useSelector(state => state.userDetails.data);
+  const [lastLogin, setLastLogin] = useState('');
+  const userLocalDetails = useSelector(state => state.userDetails.data);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    AsyncStorage.getItem(STORAGE_KEYS.LAST_LOGIN).then(res => {
+      if (res !== null) {
+        res = JSON.parse(res);
+        setLastLogin(res?.previous);
+      }
+    });
+  }, []);
 
   const logout = () => {
-    AsyncStorage.clear();
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [
-          {
-            name: AUTH_STACK,
-            params: {
-              screen: SIGNIN,
-            },
-          },
-        ],
-      }),
-    );
+    AsyncStorage.clear()
+      .catch(err => console.warn(err))
+      .finally(() => {
+        dispatch(userDetails());
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [
+              {
+                name: AUTH_STACK,
+                params: {
+                  screen: SIGNIN,
+                },
+              },
+            ],
+          }),
+        );
+      });
   };
 
   const onOptionPressed = item => {
@@ -75,10 +92,10 @@ const Profile = ({navigation}) => {
       </View>
       <View style={globalStyles.headerCard}>
         <Text style={setMediumFont(20, '700')}>
-          Account: {userDetails?.mobile}
+          Account: {userLocalDetails?.mobile}
         </Text>
         <Text style={{color: 'grey', marginTop: 5, fontSize: 12}}>
-          Last login yesterday 3:45 pm
+          Last login {lastLogin}
         </Text>
         <View
           style={{borderWidth: 0.4, borderColor: '#dbdbdb', marginVertical: 20}}
@@ -121,6 +138,12 @@ const Profile = ({navigation}) => {
     );
   };
 
+  const footerComponent = () => (
+    <Text style={{marginVertical: 10, color: 'grey', textAlign: 'center'}}>
+      App version {DeviceInfo.getVersion()}
+    </Text>
+  );
+
   if (isLoading) {
     return <Loader />;
   }
@@ -140,6 +163,7 @@ const Profile = ({navigation}) => {
             }}
           />
         )}
+        ListFooterComponent={footerComponent}
         renderItem={renderOptions}
       />
     </TabContainer>

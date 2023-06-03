@@ -4,6 +4,7 @@ import {
   Dimensions,
   StyleSheet,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Carousel from 'react-native-reanimated-carousel';
@@ -18,10 +19,11 @@ const InfoText = ({style}) => {
     getBulletin()
       .then(res => {
         if (res && res?.status) {
-          const newArr = [];
-
-          for (let i = 0; i < 4; i++) {
-            newArr.push(res?.data[i]);
+          let newArr = [];
+          let chunks;
+          while (res?.data.length > 0) {
+            chunks = res?.data.splice(0, 4);
+            newArr.push(chunks);
           }
           setBulletinData(newArr);
         }
@@ -32,7 +34,7 @@ const InfoText = ({style}) => {
 
   const renderCorousel = ({item}) => (
     <View style={styles.itemContainer}>
-      {bulletinData.map((bulletin, index) => (
+      {item.map((bulletin, index) => (
         <Text key={String(index)} style={styles.item}>
           {String(bulletin)}
         </Text>
@@ -50,7 +52,7 @@ const InfoText = ({style}) => {
           borderWidth: 0.3,
           borderColor: '#dbdbdb',
           marginVertical: 5,
-          width: '90%'
+          width: '90%',
         }}
       />
       {isLoading ? (
@@ -69,6 +71,19 @@ const InfoText = ({style}) => {
           scrollAnimationDuration={1000}
           renderItem={renderCorousel}
         />
+        // <FlatList
+        //   getItemLayout={(_, index) => ({
+        //     length: bulletinData.length,
+        //     offset: width * index,
+        //     index,
+        //   })}
+        //   showsHorizontalScrollIndicator={false}
+        //   data={bulletinData}
+        //   renderItem={renderCorousel}
+        //   // horizontal
+        //   style={styles.carousel}
+        //   keyExtractor={item => String(item)}
+        // />
       )}
     </View>
   );

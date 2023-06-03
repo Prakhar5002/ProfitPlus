@@ -19,7 +19,8 @@ const InvestPlan = ({item, onPress, isPurchaseVisible = true}) => {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           style={styles.image}
-          source={images.corousel2}
+          defaultSource={images.profitplus_icon}
+          source={{uri: item.image}}
           resizeMode="contain"
         />
         <Text

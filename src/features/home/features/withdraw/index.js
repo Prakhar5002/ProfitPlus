@@ -43,8 +43,10 @@ const Withdraw = ({navigation}) => {
       selectedBank === undefined
     ) {
       setIsBtnDisabled(true);
+    } else if (parseInt(details.amount, 10) < 300) {
+      setIsBtnDisabled(true);
     } else if (
-      parseInt(details.amount, 10) > parseInt(userLocalDetails.walletAmount, 10)
+      parseInt(details.amount, 10) > parseInt(userLocalDetails.cashAmount, 10)
     ) {
       setIsBtnDisabled(true);
     } else {
@@ -58,9 +60,11 @@ const Withdraw = ({navigation}) => {
     setCashAmount(finalAmount);
   }, [details]);
 
-  useEffect(() => {
-    fetchBanksList();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchBanksList();
+    }, []),
+  );
 
   const fetchUserDetails = () => {
     setIsLoading(true);
@@ -115,7 +119,7 @@ const Withdraw = ({navigation}) => {
       })
       .catch(err => console.warn(err))
       .finally(() => {
-        setIsLoading(false);
+        fetchUserDetails();
       });
   };
 
@@ -164,7 +168,7 @@ const Withdraw = ({navigation}) => {
     formData.append('bankid', selectedBank.bankId);
     formData.append('withdrawal_amount', details.amount);
     const checsumMethod =
-      userLocalDetails.mobile + details.amount + selectedBank.bankId + '+91';
+      userLocalDetails?.mobile + details.amount + selectedBank.bankId + '+91';
     JSHash(checsumMethod, CONSTANTS.HashAlgorithms.sha256)
       .then(hash => {
         formData.append('authchecksum', hash);
@@ -221,7 +225,7 @@ const Withdraw = ({navigation}) => {
             onPress={() =>
               setDetails({
                 ...details,
-                amount: userLocalDetails?.walletAmount,
+                amount: userLocalDetails?.cashAmount,
               })
             }>
             Withdraw all{' '}
@@ -281,6 +285,11 @@ const Withdraw = ({navigation}) => {
           parseFloat(userLocalDetails.cashAmount) && (
           <Text style={{textAlign: 'center', marginTop: 5, color: 'red'}}>
             Insufficient balance
+          </Text>
+        )}
+        {parseFloat(details.amount) < 300 && (
+          <Text style={{textAlign: 'center', marginTop: 5, color: 'red'}}>
+            Amount should not be less than 300
           </Text>
         )}
 

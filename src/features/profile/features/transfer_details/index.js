@@ -4,15 +4,17 @@ import globalStyles from '@styles/globalStyles';
 import BackButton from '@components/BackButton';
 import moment from 'moment';
 import {transferOutHistory} from '@queries';
+import {useSelector} from 'react-redux';
 import Loader from '@components/Loader';
 
 const TransferDetails = ({route, navigation}) => {
   const [details, setDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const userLocalDetails = useSelector(state => state.userDetails.data);
 
   useEffect(() => {
     const formData = new FormData();
-    formData.append('mobile', 8383818145);
+    formData.append('mobile', userLocalDetails?.mobile);
     formData.append('country_code', '+91');
     transferOutHistory(formData)
       .then(res => {

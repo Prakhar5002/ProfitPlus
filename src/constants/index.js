@@ -26,6 +26,10 @@ export const STORAGE_KEYS = {
   INITIAL_MESSAGE: 'initial_message',
   TRANSACTION_TIME: 'transaction_time',
   TRANSACTION_ID: 'transaction_id',
+  VERSION: 'version',
+  LAST_LOGIN: 'last_login',
+  TRANSACTION_DETAILS: 'transaction_details',
+  PENDING_TRANSACTION: 'pending_transaction',
 };
 
 export const APP_CONTEXT = {

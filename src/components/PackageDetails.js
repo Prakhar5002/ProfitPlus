@@ -111,7 +111,7 @@ const PackageDetails = ({navigation, route}) => {
         <ImageBackground
           style={styles.imageBackground}
           resizeMode="contain"
-          defaultSource={images.corousel1}
+          defaultSource={images.profitplus_icon}
           imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
           source={{uri: packageImage}}>
           <View style={{flex: 1}} />

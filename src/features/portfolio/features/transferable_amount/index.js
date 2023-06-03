@@ -107,7 +107,7 @@ const TranferableAmount = ({navigation}) => {
     setSelectedOption(item);
     let optionsArr = [...accOptions];
     optionsArr = optionsArr.map(option => {
-      if (item.amount === option.amount) {
+      if (item.option_key === option.option_key) {
         return {...option, selected: true};
       }
       return {...option, selected: false};
@@ -118,12 +118,12 @@ const TranferableAmount = ({navigation}) => {
   const onTransferOut = () => {
     setIsLoading(true);
     const formData = new FormData();
-    formData.append('mobile', userLocalDetails.mobile);
+    formData.append('mobile', userLocalDetails?.mobile);
     formData.append('country_code', '+91');
     formData.append('transfer_type', selectedOption.option_key);
     formData.append('transfer_amount', selectedAmount);
     const checksumKey =
-      userLocalDetails.mobile +
+      userLocalDetails?.mobile +
       selectedOption.option_key +
       selectedAmount +
       '+91';

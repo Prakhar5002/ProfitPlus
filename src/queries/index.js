@@ -143,3 +143,28 @@ export async function cashWithdrawal(data) {
     body: data,
   }).then(res => res.json());
 }
+
+export async function getAppVersion(data) {
+  return await fetch(BASE_URL + 'api/get-version').then(res => res.json());
+}
+
+export async function getNews(data) {
+  return await fetch(BASE_URL + 'api/get-profit-news').then(res => res.json());
+}
+
+export async function checkOrderStatus(data) {
+  return await fetch('https://merchant.upigateway.com/api/check_order_status', {
+    method: 'post',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(res => res.json());
+}
+
+export async function paymentResponse(data) {
+  return await fetch('http://profitpluszone.com/api/payment-response-app', {
+    method: 'post',
+    body: data,
+  }).then(res => res.json());
+}

@@ -14,10 +14,14 @@ import FilledButton from '@components/FilledButton';
 import BackButton from '@components/BackButton';
 import recharge from '@assets/data/recharge';
 import SelectDropdown from 'react-native-select-dropdown';
-import {getPaymentStatus, getUserDetails, createOrder} from '@queries';
-import {useSelector, useDispatch} from 'react-redux';
-import {userDetails} from '@redux/actions';
-import {setStorageString} from '@utils/handleLocalStorage';
+import {
+  getPaymentStatus,
+  createOrder,
+  checkOrderStatus,
+  paymentResponse,
+} from '@queries';
+import {useSelector} from 'react-redux';
+import {setStorageObject} from '@utils/handleLocalStorage';
 import Loader from '@components/Loader';
 import CustomSnackbar from '@components/CustomSnackbar';
 import BorderInput from '@components/BorderInput';
@@ -26,6 +30,7 @@ import ResponseModal from '@components/ResponseModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@constants';
 import moment from 'moment';
+import {JSHash, CONSTANTS} from 'react-native-hash';
 
 const Recharge = ({navigation}) => {
   const [rechargeAmountData, setRechargeAmountData] = useState([]);
@@ -39,7 +44,6 @@ const Recharge = ({navigation}) => {
   const paymentMethod = ['Method 1', 'Method 2'];
 
   const userLocalDetails = useSelector(state => state.userDetails?.data);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const backAction = () => {
@@ -53,15 +57,27 @@ const Recharge = ({navigation}) => {
     return () => backHandler.remove();
   }, []);
 
-  useFocusEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEYS.TRANSACTION_ID)
-      .then(res => {
-        if (res !== null) {
-          fetchPaymentStatus(res);
-        }
-      })
-      .catch(err => console.warn(err));
-  });
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem(STORAGE_KEYS.TRANSACTION_DETAILS)
+        .then(res => {
+          if (res !== null) {
+            res = JSON.parse(res);
+            fetchPaymentStatus(res.txnId);
+          }
+        })
+        .catch(err => console.warn(err))
+        .finally(() => {
+          AsyncStorage.getItem(STORAGE_KEYS.PENDING_TRANSACTION)
+            .then(localRes => {
+              if (localRes !== null) {
+                checkStatus();
+              }
+            })
+            .catch(err => console.warn(err));
+        });
+    }, []),
+  );
 
   const fetchPaymentStatus = val => {
     const formData = new FormData();
@@ -73,26 +89,97 @@ const Recharge = ({navigation}) => {
         if (res && res?.data) {
           if (res.data?.status === 'success') {
             setResponse({
-              ...response,
               visible: true,
               type: 1,
               text: 'Recharge done successfully',
             });
           } else {
             setResponse({
-              ...response,
               visible: true,
               type: 0,
               text:
                 res.data.remark === '' ? 'Recharge failed' : res.data.remark,
             });
           }
+          AsyncStorage.removeItem(STORAGE_KEYS.TRANSACTION_DETAILS);
+        } else {
+          checkStatus();
         }
+      })
+      .catch(err => console.warn(err));
+  };
+
+  const fetchPaymentResponse = (txnId, data, localRes) => {
+    const formData = new FormData();
+    formData.append('mobile', userLocalDetails.mobile);
+    formData.append('country_code', '+91');
+    formData.append('client_txn_id', txnId);
+    formData.append('status_data', JSON.stringify(data));
+    const hashKey = '+91' + txnId + userLocalDetails?.mobile;
+    JSHash(hashKey, CONSTANTS.HashAlgorithms.sha256)
+      .then(hash => {
+        formData.append('authchecksum', hash);
       })
       .catch(err => console.warn(err))
       .finally(() => {
-        AsyncStorage.removeItem(STORAGE_KEYS.TRANSACTION_ID);
+        paymentResponse(formData)
+          .then(res => {
+            if (localRes?.length > 0) {
+              const match = localRes.filter(item => item.txnId !== txnId);
+              setStorageObject(STORAGE_KEYS.PENDING_TRANSACTION, match);
+            }
+            // Alert.alert('some response getting')
+          })
+          .catch(err => {
+            console.warn(err);
+          });
       });
+  };
+
+  const checkStatus = () => {
+    AsyncStorage.getItem(STORAGE_KEYS.PENDING_TRANSACTION).then(localRes => {
+      if (localRes !== null && localRes?.length > 0) {
+        localRes = JSON.parse(localRes);
+        for (let i = 0; i < localRes.length; i++) {
+          const jsonData = {
+            key: '9e384614-47d4-49b8-9664-8e93c55940e9',
+            client_txn_id: localRes[i]?.txnId,
+            txn_date: localRes[i]?.currentDate,
+          };
+          checkOrderStatus(jsonData)
+            .then(res => {
+              if (res && res?.status) {
+                if (res.data.status === 'success') {
+                  setResponse({
+                    visible: true,
+                    type: 1,
+                    text: 'Recharge done successfully',
+                  });
+                } else if (res.data.status === 'scanning') {
+                  setResponse({
+                    visible: true,
+                    type: 0,
+                    text: 'Payment could not be completed',
+                  });
+                } else if (res.data.status === 'failure') {
+                  setResponse({
+                    visible: true,
+                    type: 0,
+                    text: 'Recharge failed',
+                  });
+                }
+                fetchPaymentResponse(localRes[i]?.txnId, res, localRes);
+              }
+            })
+            .catch(err => {
+              console.warn(err);
+            })
+            .finally(() => {
+              AsyncStorage.removeItem(STORAGE_KEYS.TRANSACTION_DETAILS);
+            });
+        }
+      }
+    });
   };
 
   const hitCreateOrder = () => {
@@ -100,11 +187,11 @@ const Recharge = ({navigation}) => {
     const jsonData = {
       key: '9e384614-47d4-49b8-9664-8e93c55940e9',
       client_txn_id: uniqueId,
-      amount: '1',
+      amount: String(selectedAmount),
       p_info: 'Wallet',
       customer_name: userLocalDetails.username,
       customer_email: 'info@profitplus.com',
-      customer_mobile: userLocalDetails.mobile,
+      customer_mobile: userLocalDetails?.mobile,
       redirect_url: 'http://profitpluszone.com/profit-response',
       udf1: 'user defined field 1 (max 25 char)',
       udf2: 'user defined field 2 (max 25 char)',
@@ -113,7 +200,10 @@ const Recharge = ({navigation}) => {
     createOrder(jsonData)
       .then(res => {
         if (res && res?.status && res?.data) {
-          setStorageString(STORAGE_KEYS.TRANSACTION_ID, uniqueId);
+          setStorageObject(STORAGE_KEYS.TRANSACTION_DETAILS, {
+            txnId: uniqueId,
+            currentDate: moment().format('DD-MM-YYYY'),
+          });
           navigation.navigate(PAYMENT_WEBVIEW, {
             url: res?.data?.payment_url,
             uniqueId,
@@ -128,66 +218,10 @@ const Recharge = ({navigation}) => {
 
   const onRecharge = () => {
     Keyboard.dismiss();
-    if (selectedAmount && typeof selectedAmount === 'number') {
+    if (selectedAmount) {
       setIsLoading(true);
       hitCreateOrder();
     }
-    // setIsLoading(true);
-    // const formData = new FormData();
-    // formData.append('mobile', userLocalDetails?.mobile);
-    // formData.append('transaction_id', '12ewdskjc');
-    // formData.append('amount', selectedAmount);
-    // formData.append('pay_status', 1);
-    // JSHash(
-    //   '12ewdskjc' + 1 + selectedAmount + userLocalDetails?.mobile,
-    //   CONSTANTS.HashAlgorithms.sha256,
-    // )
-    //   .then(hash => {
-    //     formData.append('authchecksum', hash);
-    //   })
-    //   .catch(err => console.warn(err))
-    //   .finally(() => {
-    //     walletRecharge(formData)
-    //       .then(res => {
-    //         if (res && res?.status) {
-    //           CustomSnackbar('Amount added successfully', 1);
-    //         } else {
-    //           CustomSnackbar('Some error occurred');
-    //         }
-    //       })
-    //       .catch(err => console.warn(err))
-    //       .finally(() => {
-    //         let rechargeArr = [];
-    //         rechargeArr = recharge.map((item, index) => {
-    //           if (index === 0) {
-    //             setSelectedAmount(item.amount);
-    //             return {...item, selected: true};
-    //           }
-    //           return {...item, selected: false};
-    //         });
-    //         setRechargeAmountData(rechargeArr);
-    //         fetchUserDetails();
-    //       });
-    //   });
-  };
-
-  const fetchUserDetails = () => {
-    const formData = new FormData();
-    formData.append('mobile', userLocalDetails?.mobile);
-    formData.append('country_code', '+91');
-    getUserDetails(formData)
-      .then(res => {
-        if (res && res?.status) {
-          dispatch(
-            userDetails({
-              ...userLocalDetails,
-              walletAmount: res.wallet_amount,
-            }),
-          );
-        }
-      })
-      .catch(err => console.warn(err))
-      .finally(() => setIsLoading(false));
   };
 
   useEffect(() => {

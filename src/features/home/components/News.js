@@ -7,9 +7,7 @@ const News = ({text, source, date, left = false}) => {
     <TouchableOpacity style={styles.container} activeOpacity={0.5}>
       <Image style={styles.image} source={{uri: source}} resizeMode="cover" />
       <View style={globalStyles.container}>
-        <Text numberOfLines={3} style={[styles.text]}>
-          {text}
-        </Text>
+        <Text style={[styles.text]}>{text}</Text>
         <Text style={[styles.date]}>{date}</Text>
       </View>
     </TouchableOpacity>

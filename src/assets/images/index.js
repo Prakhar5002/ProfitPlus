@@ -18,6 +18,7 @@ const images = {
   corousel2: require('.//source/corousel2.jpg'),
   corousel3: require('./source/corousel3.jpg'),
   profitplus: require('./source/profitplus.png'),
+  profitplus_icon: require('./source/logo-profitplus.png'),
   telegram_icon: require('./source/telegram.png'),
   fb_icon: require('./source/facebook.png'),
   whatsapp_icon: require('./source/whatsapp.png'),
@@ -33,6 +34,7 @@ const images = {
   withdraw: require('./source/withdraw.png'),
   help: require('./source/help.png'),
   change_password: require('./source/change_password.png'),
+  update_icon: require('./source/update.png'),
 };
 
 export default images;

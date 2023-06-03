@@ -1,26 +1,36 @@
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import React from 'react';
 import images from '@assets/images';
 import FilledButton from './FilledButton';
 
-const ResponseModal = ({text = '', type, onPress, title = undefined}) => {
-  let icon = null;
+const ResponseModal = ({
+  text = '',
+  type,
+  onPress,
+  title = undefined,
+  icon = undefined,
+}) => {
+  let appicon = null;
 
   switch (type) {
     case 0:
       title = 'Something went wrong';
-      icon = images.fail_icon;
+      appicon = images.fail_icon;
       break;
     case 1:
       title = 'Success';
-      icon = images.success_icon;
+      appicon = images.success_icon;
       break;
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Image style={styles.image} source={icon} />
+        {icon ? (
+          <Image style={styles.image} source={icon} />
+        ) : (
+          <Image style={styles.image} source={appicon} />
+        )}
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.text}>{text}</Text>
         <View style={styles.divider} />

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     width: '80%',
     borderRadius: 12,
-    backgroundColor: 'rgb(194, 221, 232)',
+    backgroundColor: 'white',
     paddingTop: 20,
     alignItems: 'center',
   },
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 0.8,
-    backgroundColor: 'rgb(179, 209, 220)',
+    backgroundColor: '#dbdbdb',
     width: '100%',
     marginTop: 20,
   },
