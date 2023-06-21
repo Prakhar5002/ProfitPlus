@@ -13,6 +13,8 @@ import {
   RECHARGE_DETAILS,
   TRANSFER_OUT_DETAILS,
   WITHDRAWAL_DETAILS,
+  COMMiSSION_HISTORY,
+  UPI_PAYMENT,
 } from './screenNames';
 import AuthStack from './navigator/AuthNavigator';
 import {defaultOptions} from './screenOptions';
@@ -29,6 +31,8 @@ import PaymentWebview from '@components/PaymentWebview';
 import RechargeDetails from '@features/profile/features/recharge_details';
 import TransferDetails from '@features/profile/features/transfer_details';
 import WithdrawalDetails from '@features/profile/features/withdrawal_details';
+import CommissionHistory from '@features/profile/features/commission_history';
+import UPIPayment from '@components/UPIPayment';
 
 const MainStack = () => {
   const Stack = createNativeStackNavigator();
@@ -62,6 +66,8 @@ const MainStack = () => {
         <Stack.Screen name={RECHARGE_DETAILS} component={RechargeDetails} />
         <Stack.Screen name={TRANSFER_OUT_DETAILS} component={TransferDetails} />
         <Stack.Screen name={WITHDRAWAL_DETAILS} component={WithdrawalDetails} />
+        <Stack.Screen name={COMMiSSION_HISTORY} component={CommissionHistory} />
+        <Stack.Screen name={UPI_PAYMENT} component={UPIPayment} />
       </Stack.Navigator>
     </MainContainer>
   );

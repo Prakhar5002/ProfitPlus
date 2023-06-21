@@ -5,7 +5,7 @@ import InputText from '@components/InputText';
 import images from '@assets/images';
 import Link from '@components/Link';
 import FilledButton from '@components/FilledButton';
-import {BOTTOM_TAB, SIGNUP} from '@navigation/screenNames';
+import {INITIAL_SCREEN, SIGNUP} from '@navigation/screenNames';
 import {login} from '@queries';
 import {JSHash, CONSTANTS} from 'react-native-hash';
 import {STORAGE_KEYS, CONTACT_NUMBER} from '@constants';
@@ -13,6 +13,7 @@ import {setStorageString, setStorageObject} from '@utils/handleLocalStorage';
 import CustomSnackbar from '@components/CustomSnackbar';
 import APP_TEXT from '@assets/locale/en';
 import {useDispatch} from 'react-redux';
+import {CommonActions} from '@react-navigation/native';
 import {userDetails as userLocalDetails} from '@redux/actions';
 import {AppContext} from '@context';
 
@@ -50,7 +51,16 @@ const Signin = ({navigation}) => {
             setStorageObject(STORAGE_KEYS.USER_DETAILS, localDetails);
             dispatch(userLocalDetails(localDetails));
             setStorageString(STORAGE_KEYS.ACCESS_TOKEN, res.token);
-            navigation.navigate(BOTTOM_TAB);
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [
+                  {
+                    name: INITIAL_SCREEN,
+                  },
+                ],
+              }),
+            );
           } else {
             setResponse(String(Object.values(res?.message)));
           }

@@ -7,36 +7,47 @@ import {
   Share,
   Linking,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import TabContainer from '@components/TabContainer';
 import {setSmallFont} from '@utils/setStyle';
-import FilledButton from '@components/FilledButton';
-import Link from '@components/Link';
 import {useSelector} from 'react-redux';
 import globalStyles from '@styles/globalStyles';
 import images from '@assets/images';
 import {SHARE_TYPE} from '@constants';
+import {transferableReward} from '@queries';
+import {TRANSFERABLE_AMOUNT} from '@navigation/screenNames';
+import Clipboard from '@react-native-clipboard/clipboard';
+import CustomSnackbar from '@components/CustomSnackbar';
+import Loader from '@components/Loader';
+import NoConnection from '@components/NoConnection';
 
 const Rewards = ({navigation}) => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [isConnected, setIsConnected] = useState(true);
   const userLocalDetails = useSelector(state => state.userDetails.data);
-  const bottomOptions = [
-    {
-      source: images.fb_icon,
-      type: SHARE_TYPE.WHATSAPP,
-    },
-    {
-      source: images.whatsapp_icon,
-      type: SHARE_TYPE.WHATSAPP,
-    },
-    {
-      source: images.insta_icon,
-      type: SHARE_TYPE.WHATSAPP,
-    },
-    {
-      source: images.telegram_icon,
-      type: SHARE_TYPE.TELEGRAM,
-    },
-  ];
+
+  useEffect(() => {
+    fetchTransferableReward();
+  }, []);
+
+  const fetchTransferableReward = () => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('mobile', userLocalDetails?.mobile);
+    formData.append('country_code', '+91');
+    transferableReward(formData)
+      .then(res => {
+        if (res && res?.status) {
+          setData(res?.data);
+        }
+      })
+      .catch(err => {
+        console.warn(err);
+        setIsConnected(false);
+      })
+      .finally(() => setLoading(false));
+  };
 
   const shareGeneral = async () => {
     try {
@@ -69,16 +80,58 @@ const Rewards = ({navigation}) => {
     }
   };
 
+  const copyToClipboard = () => {
+    if (userLocalDetails?.referalCode) {
+      Clipboard.setString(userLocalDetails?.referalCode);
+      CustomSnackbar('Code copied successfully', 1);
+    }
+  };
+
+  if (loading) {
+    return <Loader isTransparent={false} />;
+  }
+
+  if (!isConnected) {
+    return <NoConnection onPress={fetchTransferableReward} />;
+  }
+
   return (
     <TabContainer>
       <View style={styles.headerContainer}>
         <View style={{paddingHorizontal: 20, marginVertical: 15}}>
           <Text style={{fontSize: 24, fontWeight: '600', color: 'white'}}>
-            ₹0.00
+            ₹{data?.totalcommission}
           </Text>
-          <Text style={{fontSize: 16, color: '#dbdbdb'}}>
-            Total commission earned
-          </Text>
+          <Text style={{fontSize: 16, color: '#dbdbdb'}}>Total commission</Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: 'white',
+            marginHorizontal: 20,
+            borderRadius: 12,
+            padding: 20,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View style={{flex: 1}}>
+            <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
+              ₹{data?.totalcommission}
+            </Text>
+            <Text style={{marginTop: 3, color: '#090909'}}>
+              Transferable commission
+            </Text>
+          </View>
+
+          <View>
+            <Pressable
+              style={styles.cardBtnContainer}
+              onPress={() => navigation.navigate(TRANSFERABLE_AMOUNT)}>
+              <Image
+                style={[globalStyles.icon, {tintColor: 'white'}]}
+                source={images.right_arrow}
+              />
+            </Pressable>
+          </View>
         </View>
         <View style={styles.headerCard}>
           <Text style={setSmallFont(18, '700')}>Invite a friend</Text>
@@ -112,13 +165,20 @@ const Rewards = ({navigation}) => {
           </View>
         </View>
       </View>
-      {/* <View style={styles.bottomCard}>
-        {bottomOptions.map((item, index) => (
-          <Pressable key={String(index)} onPress={() => onShare(item.type)}>
-            <Image source={item.source} style={styles.icon} />
-          </Pressable>
-        ))}
-      </View> */}
+
+      <View style={styles.headerCard}>
+        <Text style={setSmallFont(18, '700')}>My referral code</Text>
+        <Pressable style={styles.referralContainer} onPress={copyToClipboard}>
+          <Text style={styles.referralText}>
+            {userLocalDetails?.referalCode}
+          </Text>
+          <Image
+            style={{width: 25, height: 25}}
+            source={images.copy_icon}
+            tintColor="white"
+          />
+        </Pressable>
+      </View>
     </TabContainer>
   );
 };
@@ -164,6 +224,20 @@ const styles = StyleSheet.create({
   icon: {
     width: 40,
     height: 40,
+  },
+  referralContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    backgroundColor: 'grey',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 12,
+  },
+  referralText: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'white',
   },
 });
 

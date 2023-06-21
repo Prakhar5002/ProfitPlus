@@ -8,11 +8,13 @@ import {getPackageList} from '@queries';
 import {useFocusEffect} from '@react-navigation/native';
 import Loader from '@components/Loader';
 import globalStyles from '@styles/globalStyles';
+import NoConnection from '@components/NoConnection';
 
 const Invest = ({navigation}) => {
   const [plansData, setPlansData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -28,7 +30,10 @@ const Invest = ({navigation}) => {
           setPlansData(res?.data);
         }
       })
-      .catch(err => console.warn(err))
+      .catch(err => {
+        console.warn(err);
+        setIsConnected(false);
+      })
       .finally(() => {
         setIsLoading(false);
         setRefreshing(false);
@@ -39,6 +44,10 @@ const Invest = ({navigation}) => {
     setRefreshing(true);
     fetchPackages();
   }, []);
+
+  if (!isConnected) {
+    return <NoConnection onPress={fetchPackages} />;
+  }
 
   const header = () => (
     <View>

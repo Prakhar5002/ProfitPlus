@@ -50,9 +50,7 @@ const RechargeDetails = ({route, navigation}) => {
         </Text>
       </View>
       <View style={{alignItems: 'center'}}>
-        <Text style={{color: '#090909'}}>
-          {moment(item.transaction_date).format('MMM Do YY')}
-        </Text>
+        <Text style={{color: '#090909'}}>{item.transaction_date}</Text>
         <Text
           style={{
             color: item?.status === 'success' ? 'green' : 'red',

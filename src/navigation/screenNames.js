@@ -24,3 +24,5 @@ export const PAYMENT_WEBVIEW = 'payment_webview';
 export const RECHARGE_DETAILS = 'recharge_details';
 export const TRANSFER_OUT_DETAILS = 'transfer_out_details';
 export const WITHDRAWAL_DETAILS = 'withdrawal_details';
+export const COMMiSSION_HISTORY = 'commission_history';
+export const UPI_PAYMENT = 'upi_payment';

@@ -1,13 +1,17 @@
 import {View, Text, StyleSheet, FlatList, BackHandler} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import globalStyles from '@styles/globalStyles';
 import BackButton from '@components/BackButton';
 import {capitalize} from '@utils';
+import {commissionHistory} from '@queries';
 import moment from 'moment';
+import Loader from '@components/Loader';
+import {useSelector} from 'react-redux';
 
-const MyPlan = ({route, navigation}) => {
-  const {data} = route?.params;
-
+const CommissionHistory = ({route, navigation}) => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const localUserDetails = useSelector(state => state.userDetails.data);
   useEffect(() => {
     const backAction = () => {
       navigation.goBack();
@@ -20,20 +24,30 @@ const MyPlan = ({route, navigation}) => {
     return () => backHandler.remove();
   }, []);
 
-  function toTimestamp(strDate) {
-    var datum = Date.parse(strDate);
-    return datum;
+  useEffect(() => {
+    const formData = new FormData();
+    formData.append('mobile', localUserDetails.mobile);
+    formData.append('country_code', '+91');
+    commissionHistory(formData)
+      .then(res => {
+        if (res && res?.status) {
+          setData(res.data);
+        }
+      })
+      .catch(err => console.warn(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <Loader isTransparent={false} />;
   }
 
   const renderDetails = ({item}) => (
     <View style={styles.itemContainer}>
       <Text style={{fontSize: 18, fontWeight: '500', color: '#000', flex: 1}}>
-        ₹{item.profit_income}
+        ₹{item.amount}
       </Text>
-      <Text style={{color: '#090909'}}>
-        {/* {moment(item.date).format('MMM Do YY')} */}
-        {moment(Date.parse(item.date)).format('MMM Do YY')}
-      </Text>
+      <Text style={{color: '#090909'}}>{String(item.date)}</Text>
     </View>
   );
 
@@ -41,16 +55,16 @@ const MyPlan = ({route, navigation}) => {
     <View style={[globalStyles.container, {backgroundColor: '#3b7deb'}]}>
       <View style={styles.header}>
         <BackButton onPress={() => navigation.goBack()} />
-        <Text style={styles.headerText}>{capitalize(data.name)}</Text>
+        <Text style={styles.headerText}>Commission History</Text>
       </View>
       <View style={styles.bottomContainer}>
-        {data?.profit_details.length === 0 ? (
+        {data.length === 0 ? (
           <View style={globalStyles.center}>
             <Text style={{color: '#090909'}}>No records found!</Text>
           </View>
         ) : (
           <FlatList
-            data={data?.profit_details}
+            data={data}
             keyExtractor={(item, index) => String(index)}
             renderItem={renderDetails}
           />
@@ -101,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyPlan;
+export default CommissionHistory;

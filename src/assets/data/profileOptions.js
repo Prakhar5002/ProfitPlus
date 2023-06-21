@@ -17,6 +17,11 @@ export default [
     source: images.withdraw,
   },
   {
+    id: 6,
+    title: 'Commission history',
+    source: images.withdraw,
+  },
+  {
     id: 3,
     title: 'Online help',
     source: images.help,

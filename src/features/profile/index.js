@@ -15,17 +15,16 @@ import {
   RECHARGE_DETAILS,
   TRANSFER_OUT_DETAILS,
   WITHDRAWAL_DETAILS,
+  COMMiSSION_HISTORY,
 } from '@navigation/screenNames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
 import {CONTACT_NUMBER, STORAGE_KEYS} from '@constants';
 import {useSelector, useDispatch} from 'react-redux';
 import {userDetails} from '@redux/actions';
-import Loader from '@components/Loader';
 import DeviceInfo from 'react-native-device-info';
 
 const Profile = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [lastLogin, setLastLogin] = useState('');
   const userLocalDetails = useSelector(state => state.userDetails.data);
   const dispatch = useDispatch();
@@ -75,6 +74,8 @@ const Profile = ({navigation}) => {
       case 5:
         logout();
         break;
+      case 6:
+        return navigation.navigate(COMMiSSION_HISTORY);
       default:
         break;
     }
@@ -144,9 +145,6 @@ const Profile = ({navigation}) => {
     </Text>
   );
 
-  if (isLoading) {
-    return <Loader />;
-  }
   return (
     <TabContainer>
       <FlatList

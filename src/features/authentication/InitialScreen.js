@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@constants';
 import {AUTH_STACK, BOTTOM_TAB} from '@navigation/screenNames';
 import {userDetails} from '@redux/actions';
-import {useDispatch} from 'react-redux';
-import {getAppVersion} from '@queries';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAppVersion, getUserDetails} from '@queries';
 import {setStorageObject} from '@utils/handleLocalStorage';
 import DeviceInfo from 'react-native-device-info';
 import ResponseModal from '@components/ResponseModal';
@@ -16,6 +16,7 @@ import moment from 'moment';
 const InitialScreen = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [isUpdate, setIsUpdate] = useState(false);
+  const userLocalDetails = useSelector(state => state.userDetails.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const InitialScreen = ({navigation}) => {
     });
     AsyncStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN).then(res => {
       if (res !== null) {
-        navigation.navigate(BOTTOM_TAB);
+        fetchUserDetails();
       } else {
         navigation.navigate(AUTH_STACK);
       }
@@ -64,6 +65,34 @@ const InitialScreen = ({navigation}) => {
         setStorageObject(STORAGE_KEYS.LAST_LOGIN, newData);
       }
     });
+  };
+
+  const fetchUserDetails = () => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('mobile', userLocalDetails?.mobile);
+    formData.append('country_code', '+91');
+    getUserDetails(formData)
+      .then(res => {
+        if (res && res?.status && res?.wallet_amount) {
+          dispatch(
+            userDetails({
+              ...userLocalDetails,
+              walletAmount: res.wallet_amount,
+              username: res.name,
+              referalCode: res.referral_code,
+              cashAmount: res.cash_amount,
+            }),
+          );
+        }
+      })
+      .catch(err => {
+        console.warn(err);
+      })
+      .finally(() => {
+        setLoading(false);
+        navigation.navigate(BOTTOM_TAB);
+      });
   };
 
   if (isUpdate) {

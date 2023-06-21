@@ -22,6 +22,7 @@ import {useSelector} from 'react-redux';
 import {useFocusEffect} from '@react-navigation/native';
 import {getUserPortfolio} from '@queries';
 import Loader from '@components/Loader';
+import NoConnection from '@components/NoConnection';
 
 const Portfolio = ({navigation}) => {
   const [myPackageDetails, setMyPackageDetails] = useState([]);
@@ -33,6 +34,8 @@ const Portfolio = ({navigation}) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isConnected, setIsConnected] = useState(true);
+
   const userDetails = useSelector(state => state.userDetails.data);
 
   useFocusEffect(
@@ -64,12 +67,19 @@ const Portfolio = ({navigation}) => {
           setMyPackageDetails(res.data);
         }
       })
-      .catch(err => console.warn(err))
+      .catch(err => {
+        console.warn(err);
+        setIsConnected(false);
+      })
       .finally(() => {
         setIsLoading(false);
         setRefreshing(false);
       });
   };
+
+  if (!isConnected) {
+    return <NoConnection onPress={onRefresh} />;
+  }
 
   if (isLoading) {
     return <Loader isTransparent={false} />;

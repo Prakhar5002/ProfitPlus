@@ -168,3 +168,17 @@ export async function paymentResponse(data) {
     body: data,
   }).then(res => res.json());
 }
+
+export async function commissionHistory(data) {
+  return await fetch(BASE_URL + 'api/getUser-commissionhistory', {
+    method: 'post',
+    body: data,
+  }).then(res => res.json());
+}
+
+export async function transferableReward(data) {
+  return await fetch(BASE_URL + 'api/user-reward-transferable', {
+    method: 'post',
+    body: data,
+  }).then(res => res.json());
+}

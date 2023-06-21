@@ -48,9 +48,9 @@ const TransferDetails = ({route, navigation}) => {
           {item?.transfer_id}
         </Text>
       </View>
-      <View>
+      <View style={{alignItems: "center"}}>
         <Text style={{color: '#090909'}}>
-          {moment(item?.transfer_date).format('MMM Do YY')}
+          {moment(item?.transfer_date).format('DD-MM-YYYY')}
         </Text>
         <Text
           style={{

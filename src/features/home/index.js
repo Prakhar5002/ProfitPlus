@@ -40,6 +40,7 @@ import {STORAGE_KEYS} from '@constants';
 import InitialPopup from './components/InitialPopup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {JSHash, CONSTANTS} from 'react-native-hash';
+import NoConnection from '@components/NoConnection';
 
 const Home = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,6 +48,7 @@ const Home = ({navigation}) => {
   const [isInitialPopup, setIsInitialPopup] = useState(false);
   const [newsData, setNewsData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
   const userLocalDetails = useSelector(state => state.userDetails.data);
   const dispatch = useDispatch();
 
@@ -181,10 +183,15 @@ const Home = ({navigation}) => {
       })
       .catch(err => {
         console.warn(err);
+        setIsConnected(false);
         CustomSnackbar(APP_TEXT.error.error_text);
       })
       .finally(() => fetchPackageList());
   };
+
+  if (!isConnected) {
+    return <NoConnection onPress={onRefresh} />;
+  }
 
   const header = () => (
     <View>

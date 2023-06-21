@@ -21,6 +21,7 @@ const images = {
   profitplus_icon: require('./source/logo-profitplus.png'),
   telegram_icon: require('./source/telegram.png'),
   fb_icon: require('./source/facebook.png'),
+  copy_icon: require('./source/copy.png'),
   whatsapp_icon: require('./source/whatsapp.png'),
   whatsapp2_icon: require('./source/whatsapp2.png'),
   insta_icon: require('./source/instagram.png'),
@@ -35,6 +36,8 @@ const images = {
   help: require('./source/help.png'),
   change_password: require('./source/change_password.png'),
   update_icon: require('./source/update.png'),
+  upi_bhim: require('./source/upi_bhim.png'),
+  upi_gpay: require('./source/upi_gpay.png'),
 };
 
 export default images;

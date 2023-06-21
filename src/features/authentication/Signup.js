@@ -5,7 +5,7 @@ import InputText from '@components/InputText';
 import images from '@assets/images';
 import Link from '@components/Link';
 import FilledButton from '@components/FilledButton';
-import {BOTTOM_TAB, SIGNIN} from '@navigation/screenNames';
+import {INITIAL_SCREEN, SIGNIN} from '@navigation/screenNames';
 import {registerUser} from '@queries';
 import {setStorageObject, setStorageString} from '@utils/handleLocalStorage';
 import {JSHash, CONSTANTS} from 'react-native-hash';
@@ -15,6 +15,7 @@ import {userDetails as userLocalDetails} from '@redux/actions';
 import {passwordValidation} from '@utils/validations';
 import APP_TEXT from '@assets/locale/en';
 import {useDispatch} from 'react-redux';
+import {CommonActions} from '@react-navigation/native';
 import {AppContext} from '@context';
 
 const Signup = ({navigation}) => {
@@ -105,7 +106,16 @@ const Signup = ({navigation}) => {
                   setStorageObject(STORAGE_KEYS.USER_DETAILS, localDetails);
                   setStorageString(STORAGE_KEYS.ACCESS_TOKEN, 'signup_token');
                   dispatch(userLocalDetails(localDetails));
-                  navigation.navigate(BOTTOM_TAB);
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 1,
+                      routes: [
+                        {
+                          name: INITIAL_SCREEN,
+                        },
+                      ],
+                    }),
+                  );
                 } else {
                   setResponse(String(Object.values(res?.message)));
                 }
@@ -240,7 +250,7 @@ const styles = StyleSheet.create({
   bottomText: {
     fontSize: 14,
     color: 'rgb(46, 45, 44)',
-    marginTop: 20,
+    marginVertical: 20,
     alignSelf: 'center',
   },
 });

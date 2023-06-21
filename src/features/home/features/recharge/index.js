@@ -25,7 +25,7 @@ import {setStorageObject} from '@utils/handleLocalStorage';
 import Loader from '@components/Loader';
 import CustomSnackbar from '@components/CustomSnackbar';
 import BorderInput from '@components/BorderInput';
-import {PAYMENT_WEBVIEW} from '@navigation/screenNames';
+import {PAYMENT_WEBVIEW, UPI_PAYMENT} from '@navigation/screenNames';
 import ResponseModal from '@components/ResponseModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {STORAGE_KEYS} from '@constants';
@@ -35,13 +35,14 @@ import {JSHash, CONSTANTS} from 'react-native-hash';
 const Recharge = ({navigation}) => {
   const [rechargeAmountData, setRechargeAmountData] = useState([]);
   const [selectedAmount, setSelectedAmount] = useState(500);
+  const [selectedOption, setSelectedOption] = useState('QR Code');
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState({
     visible: false,
     type: 0,
     text: '',
   });
-  const paymentMethod = ['Method 1', 'Method 2'];
+  const paymentMethod = ['QR Code', 'UPI'];
 
   const userLocalDetails = useSelector(state => state.userDetails?.data);
 
@@ -128,7 +129,6 @@ const Recharge = ({navigation}) => {
               const match = localRes.filter(item => item.txnId !== txnId);
               setStorageObject(STORAGE_KEYS.PENDING_TRANSACTION, match);
             }
-            // Alert.alert('some response getting')
           })
           .catch(err => {
             console.warn(err);
@@ -187,7 +187,8 @@ const Recharge = ({navigation}) => {
     const jsonData = {
       key: '9e384614-47d4-49b8-9664-8e93c55940e9',
       client_txn_id: uniqueId,
-      amount: String(selectedAmount),
+      // amount: String(selectedAmount),
+      amount: '1',
       p_info: 'Wallet',
       customer_name: userLocalDetails.username,
       customer_email: 'info@profitplus.com',
@@ -199,15 +200,24 @@ const Recharge = ({navigation}) => {
     };
     createOrder(jsonData)
       .then(res => {
+        console.log('Create order response::>>', res);
         if (res && res?.status && res?.data) {
           setStorageObject(STORAGE_KEYS.TRANSACTION_DETAILS, {
             txnId: uniqueId,
             currentDate: moment().format('DD-MM-YYYY'),
           });
-          navigation.navigate(PAYMENT_WEBVIEW, {
-            url: res?.data?.payment_url,
-            uniqueId,
-          });
+          console.log(selectedOption);
+          if (selectedOption === 'UPI') {
+            navigation.navigate(UPI_PAYMENT, {
+              url: res?.data?.upi_intent,
+              uniqueId,
+            });
+          } else {
+            navigation.navigate(PAYMENT_WEBVIEW, {
+              url: res?.data?.payment_url,
+              uniqueId,
+            });
+          }
         } else {
           CustomSnackbar(res?.msg);
         }
@@ -285,10 +295,10 @@ const Recharge = ({navigation}) => {
         />
         <Text
           style={[
-            {color: selectedAmount < 500 ? 'red' : 'white', fontSize: 12},
+            {color: selectedAmount < 300 ? 'red' : 'white', fontSize: 12},
             verticalMargin(5),
           ]}>
-          Minimum amount should be 500
+          Minimum amount should be 300
         </Text>
         <View style={styles.rechargeContainer}>
           {rechargeAmountData.map((item, index) => (
@@ -314,10 +324,8 @@ const Recharge = ({navigation}) => {
         <SelectDropdown
           buttonStyle={styles.dropdownButtonStyle}
           data={paymentMethod}
-          defaultValue="Method 1"
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-          }}
+          defaultValue="QR Code"
+          onSelect={selectedItem => setSelectedOption(selectedItem)}
           buttonTextAfterSelection={(selectedItem, index) => {
             // text represented after item is selected
             // if data array is an array of objects then return selectedItem.property to render after item is selected
@@ -330,7 +338,7 @@ const Recharge = ({navigation}) => {
           }}
         />
         <FilledButton
-          disabled={selectedAmount < 500}
+          disabled={selectedAmount < 300}
           style={styles.btn}
           title="RECHARGE CONFIRM"
           onPress={onRecharge}
