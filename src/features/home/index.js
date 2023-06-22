@@ -67,16 +67,7 @@ const Home = ({navigation}) => {
           setNewsData(res?.data);
         }
       })
-      .catch(err => console.warn(err))
-      .finally(() => {
-        AsyncStorage.getItem(STORAGE_KEYS.PENDING_TRANSACTION)
-          .then(localRes => {
-            if (localRes !== null) {
-              checkStatus();
-            }
-          })
-          .catch(err => console.warn(err));
-      });
+      .catch(err => console.warn(err));
   }, []);
 
   const onRefresh = React.useCallback(() => {
@@ -91,56 +82,6 @@ const Home = ({navigation}) => {
         setTimeout(() => {
           setIsInitialPopup(true);
         }, 1000);
-      }
-    });
-  };
-
-  const fetchPaymentResponse = (txnId, data, localRes) => {
-    const formData = new FormData();
-    formData.append('mobile', userLocalDetails.mobile);
-    formData.append('country_code', '+91');
-    formData.append('client_txn_id', txnId);
-    formData.append('status_data', JSON.stringify(data));
-    const hashKey = '+91' + txnId + userLocalDetails?.mobile;
-    JSHash(hashKey, CONSTANTS.HashAlgorithms.sha256)
-      .then(hash => {
-        formData.append('authchecksum', hash);
-      })
-      .catch(err => console.warn(err))
-      .finally(() => {
-        paymentResponse(formData)
-          .then(res => {
-            // Alert.alert('some response getting')
-          })
-          .catch(err => {
-            console.warn(err);
-          });
-      });
-  };
-
-  const checkStatus = () => {
-    AsyncStorage.getItem(STORAGE_KEYS.PENDING_TRANSACTION).then(localRes => {
-      if (localRes !== null && localRes?.length > 0) {
-        localRes = JSON.parse(localRes);
-        for (let i = 0; i < localRes.length; i++) {
-          const jsonData = {
-            key: '9e384614-47d4-49b8-9664-8e93c55940e9',
-            client_txn_id: localRes[i]?.txnId,
-            txn_date: localRes[i]?.currentDate,
-          };
-          checkOrderStatus(jsonData)
-            .then(res => {
-              if (res && res?.status) {
-                fetchPaymentResponse(localRes[i]?.txnId, res, localRes);
-              }
-            })
-            .catch(err => {
-              console.warn(err);
-            })
-            .finally(() => {
-              AsyncStorage.removeItem(STORAGE_KEYS.TRANSACTION_DETAILS);
-            });
-        }
       }
     });
   };

@@ -42,7 +42,7 @@ const Recharge = ({navigation}) => {
     type: 0,
     text: '',
   });
-  const paymentMethod = ['QR Code', 'UPI'];
+  const paymentMethod = ['UPI', 'QR Code'];
 
   const userLocalDetails = useSelector(state => state.userDetails?.data);
 
@@ -324,7 +324,7 @@ const Recharge = ({navigation}) => {
         <SelectDropdown
           buttonStyle={styles.dropdownButtonStyle}
           data={paymentMethod}
-          defaultValue="QR Code"
+          defaultValue="UPI"
           onSelect={selectedItem => setSelectedOption(selectedItem)}
           buttonTextAfterSelection={(selectedItem, index) => {
             // text represented after item is selected
