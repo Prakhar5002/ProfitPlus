@@ -215,8 +215,8 @@ const Recharge = ({navigation}) => {
     const jsonData = {
       key: '9e384614-47d4-49b8-9664-8e93c55940e9',
       client_txn_id: uniqueId,
-      // amount: String(selectedAmount),
-      amount: '1',
+      amount: String(selectedAmount),
+      // amount: '1',
       p_info: 'Wallet',
       customer_name: userLocalDetails.username,
       customer_email: 'info@profitplus.com',
